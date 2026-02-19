@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#define MAX 100
+
+int stack[MAX],top = -1,N;
+
+void push(int value) {
+    if (top == N - 1) {
+        printf("Overflow\n");
+    } else {
+        top++;
+        stack[top] = value;
+    }
+}
+void pop() {
+    if (top == -1) {
+        printf("Underflow\n");
+    } else {
+        printf("Popped: %d\n", stack[top]);
+        top--;
+    }
+}
+void display() {
+    if (top == -1) {
+        printf("Stack is Empty\n");
+    } else {
+        printf("Remaining Stack:\n");
+        for (int i = top; i >= 0; i--) {
+            printf("%d\n", stack[i]);
+        }
+    }
+}
+
+int main() {
+    int i, value;
+
+    scanf("%d", &N);
+
+    for (i = 0; i < 3; i++) {
+        scanf("%d", &value);
+        push(value);
+    }
+    pop();
+    for (i = 0; i < 2; i++) {
+        scanf("%d", &value);
+        push(value);
+    }
+    for (i = 0; i < 3; i++) {
+        pop();
+    }
+    display();
+
+    return 0;
+}
