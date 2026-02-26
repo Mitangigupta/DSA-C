@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+int operand[100];
+int top1 = -1;
+
+int evalprefixexpression(char* exp) {
+
+    top1 = -1;   // reset stack
+
+    for(int i = strlen(exp) - 1; i >= 0; i--) {
+
+        if(exp[i] == ' ')
+            continue;
+
+        if(isdigit(exp[i])) {
+            int num = 0, p = 1;
+
+            while(i >= 0 && isdigit(exp[i])) {
+                num = num + (exp[i] - '0') * p;
+                p = p * 10;
+                i--;
+            }
+
+            i++;  // adjust index
+            operand[++top1] = num;
+        }
+        else if(exp[i]=='+'||exp[i]=='-'||exp[i]=='*'||exp[i]=='/'||exp[i]=='^') {
+
+            int x = operand[top1--];
+            int y = operand[top1--];
+            int z;
+
+            switch(exp[i]) {
+                case '+': 
+                    z = x + y; 
+                    break;
+                case '-': 
+                    z = x - y; 
+                    break;
+                case '*': z = x * y; 
+                    break;
+                case '/': 
+                    z = x / y;
+                    break;
+                case '^': 
+                    z = (int)pow(x, y); 
+                    break;
+            }
+
+            operand[++top1] = z;
+        }
+    }
+
+    return operand[top1];
+}
+
+int main() {
+
+    char expr[100];
+
+    fgets(expr, sizeof(expr), stdin);
+    expr[strcspn(expr, "\n")] = '\0';
+
+    int result = evalprefixexpression(expr);
+
+    printf("%d\n", result);
+
+    return 0;
+}
