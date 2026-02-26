@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+int operand[100];
+int top1 = -1;
+
+int evalpostfixexpression(char* exp){
+    top1 = -1; 
+
+    for(int i = 0; i < strlen(exp); i++){
+
+        if(exp[i] == ' ')
+            continue;
+
+        if(isdigit(exp[i])){
+            int num = 0;
+            while(isdigit(exp[i])){
+                num = num * 10 + exp[i] - '0';
+                i++;
+            }
+            i--;
+            operand[++top1] = num;
+        }
+        else if(exp[i]=='+'||exp[i]=='-'||exp[i]=='*'||exp[i]=='/'||exp[i]=='^'){
+            int x = operand[top1--];
+            int y = operand[top1--];
+            int z;
+
+            switch(exp[i]){
+                case '+': 
+                    z = y + x; 
+                    break;
+                case '-': 
+                    z = y - x; 
+                    break;
+                case '*': 
+                    z = y * x; 
+                    break;
+                case '/': 
+                    z = y / x; 
+                    break;
+                case '^': 
+                    z = (int)pow(y, x); 
+                    break;
+            }
+
+            operand[++top1] = z;
+        }
+    }
+
+    return operand[top1];
+}
+
+int main(){
+    char expr[100];
+
+    fgets(expr, sizeof(expr), stdin);
+    expr[strcspn(expr, "\n")] = '\0';
+
+    int result = evalpostfixexpression(expr);
+
+    printf("%d\n", result);
+
+    return 0;
+}
