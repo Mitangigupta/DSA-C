@@ -21,7 +21,7 @@ void doProcess(){
             z = y * x;
             break;
         case '/':
-            z = y / z;
+            z = y / x;
             break;
         case '^':
             z = (int)pow(y,x);
@@ -106,7 +106,7 @@ int evalpostfixexpression(char* exp){
             z = y * x;
             break;
         case '/':
-            z = y / z;
+            z = y / x;
             break;
         case '^':
             z = (int)pow(y,x);
