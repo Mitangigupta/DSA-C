@@ -1,64 +1,114 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<ctype.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
-int precedence(char opr){
-    switch (opr){
-       case'+':
-       case'-':
-          return 1;
-
-        case'*':
-        case'/':
-           return 2;
+int precedence(char op){
+    switch (op){
+        case '+':
+        case '-':
+            return 1;
+        case '*':
+        case '/':
+            return 2;
         case '^':
-           return 3;
-        default: 
-           return 0;
-    
+            return 3;
+        default:
+            return 0;
     }
 }
 
-char* convertInflixToPostflix(char* inflixExp){
-    int len = strlen(inflixExp), top = -1, x =0;
-    char* postflix = (char*) malloc(len +1);
+char* convert(char* infix){
+    int len = strlen(infix), top = -1, x = 0;
+    char* post = (char*)malloc(len+1);
     char operator[len];
-    for(int i=0;i<len;i++){
-        char ch = inflixExp[i];
-        if(isalnum(ch)){
-            postflix[x++] = ch;
 
+    for (int i=len-1; i>=0; i--){
+        char ch = infix[i];
+        if (isalnum(ch)){
+            post[x++] = ch;
         }
-        else if(ch=='+'|| ch=='-' || ch=='*' || ch=='/' || ch=='^'){
-            while(top!=-1 && precedence(ch)<=precedence(operator[top]) && ch!='^'){
-                postflix[x++] =operator[top--];
+        else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^'){
+            while (top != -1 && precedence(ch) < precedence(operator[top]) && ch != '^'){
+                post[x++] = operator[top--];
             }
             operator[++top] = ch;
-
         }
-        else if(ch=='('){
+        else if (ch == ')'){
             operator[++top] = ch;
-
         }
-        else if(ch==')'){
-            while(operator[top] !='('){
-                postflix[x++] = operator[top--];
+        else if (ch == '('){
+            while (operator[top] != ')'){
+                post[x++] = operator[top--];
             }
             top--;
-
         }
     }
-    while(top !=-1){
-        postflix[x++] = operator[top--];
+    while (top != -1){
+        post[x++] = operator[top--];
     }
-    postflix[x] = '\0';
-    return postflix;
+    post[x] = '\0';
+    return post;
 }
-int main(){
-    char expr[100];
-    printf("Enter Inflix Expression:");
-    gets(expr);
-    printf("Postflix expression = %s\n", convertInflixToPostflix(expr));
-    return 0;
+
+
+char* convertToPre(char* infix){
+    int len = strlen(infix), top = -1, x = 0;
+    char* pre = (char*)malloc(len+1);
+    char operator[len];
+
+    for (int i=len-1; i>=0; i--){
+        char ch = infix[i];
+        if (isalnum(ch)){
+            pre[x++] = ch;
+        }
+        else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^'){
+            while (top != -1 && precedence(ch) <=precedence(operator[top]) ||  precedence(ch) ==precedence(operator[top]) && ch == '^'){
+                pre[x++] = operator[top--];
+            }
+            operator[++top] = ch;
+        }
+        else if (ch == ')'){
+            operator[++top] = ch;
+        }
+        else if (ch == '('){
+            while (operator[top] != ')'){
+                pre[x++] = operator[top--];
+            }
+            top--;
+        }
+    }
+    while (top != -1){
+        pre[x++] = operator[top--];
+    }
+    pre[x] = '\0';
+    strrv(pre);
+    return strrv;
+}
+
+
+int main (){
+    char exp[100];
+    printf ("Enter the Infix Expression: ");
+    gets(exp);
+    char* expression = convert(exp);
+    char rev[1000];
+    int n = strlen(expression);
+    int k = 0;
+    
+    for (int i=n-1; i>=0; i--){
+        rev[k++] = expression[i];
+    }
+    rev[k] = '\0';
+    printf ("Post expression is: %s", rev);
+    printf ("\nEnter the Infix Expression: ");
+    gets(exp);
+     char* strexpression = convertToPre(exp);
+    char strrev[1000];
+    int n = strlen(strexpression);
+    int k = 0;
+    for (int i=n-1; i>=0; i--){
+        strrev[k++] = strexpression[i];
+    }
+    printf ("Prefix Expression is: %s",convertToPre(exp));
 }
