@@ -35,13 +35,94 @@ void insertNodeatEnde(int data){
         head = newNode;
     else{
         struct Node* temp = head;
-        while(temo->next!=NULL){
+        while(temp->next!=NULL){
             temp = temp->next;
         }
         temp-> = newNode;
         printf("Node inserted at end !!\n");
     }
 }  
+void insertnodeatpos(int data,int pos){
+    if(head==NULL)
+      printf("List is empty !!!\n");
+    else if(pos==0)
+       insertNodeatBeg(data);
+    else{
+        struct Node* temp = head;
+        int i=0;
+        while(temp!=NULL){
+            if(i==pos-1)
+            break;
+        temp = temp->next;
+        i++
+        }
+        if(temp==NULL|| temp -> next == NULL)
+            printf("Invalid position\n");
+        else{
+            struct Node* newNode = createNode(data);
+            newNode->next = temp->next;
+            temp->next = newNode;
+            printf("NODE INSERTED !!!!!")
+        }
+    }        
+
+}
+void deletefrombeg(){
+      if(head==NULL)
+      printf("List is empty !!!\n");
+    else{
+        head = head->next;
+        printf("Node deleted!!!");
+    }
+}
+void deletefromend(){
+      if(head==NULL)
+      printf("List is empty !!!\n");
+    else if(head->next == NULL){
+        struct Node* temp = head;
+        while(temp->next->next!= NULL){
+            temp = temp->next;
+        }
+        temp->next = NULL;
+        printf("Node deleted !!!!\n")
+    }
+}
+void deletenodefromanypos(int pos){
+     if(head==NULL)
+      printf("List is empty !!!\n");
+    else if(pos == 0){
+        struct Node* temp = head;
+        int i=0;
+        while(temp != NULL){
+            if(i == pos-1)
+             break;
+           temp = temp->next;
+           i++;
+        }
+        if(temp == NULL || temp->next  == NULL)
+           printf("Invalid position\n")
+    else{
+        temp->next = temp->next->next;
+        printf("Node deleted\n");
+    }
+  }
+}
+void search(int val){
+    if(head==NULL)
+        printf("List is empty !!!\n");
+    else{
+        struct Node* temp= head;
+        while(temp!=NULL){
+           if(temp->data == val){
+            printf("found\n");
+            return;
+           }
+           temp = temp->next;
+        }
+        printf("Not found!!!\n");
+    }
+}
+
 int main()
 {
     while (1)
@@ -63,36 +144,38 @@ int main()
         case 1:
             printf("Enter Data: ");
             scanf("%d", &data);
+            insertNodeatBeg(data);
             break;
         case 2:
             printf("Enter Data: ");
             scanf("%d", &data);
+            insertNodeatEnde(data);
             break;
         case 3:
             printf("Enter data: ");
             scanf("%d",&data);
             printf("Enter pos: ");
             scanf("%d",&pos);
+            insertnodeatpos(data,pos);
             break;
         case 4:
+            deletefrombeg();
             break;
         case 5:
+            deletefromend();
             break;
         case 6:
         printf("Enter pos: ");
         scanf("%d",&pos);
+        deletenodefromanypos(pos);
             break;
         case 7:
+        display()
             break;
         case 8:
         printf("enter searching element: ");
         scanf("%d",&data);
-        int index = 
-        if(index !=-1)
-            printf("Element not found at index %d\n",index);
-        else
-            printf("element not found!!!\n");
-
+        search(data);
             break;
         case 9:
         exit(0);
